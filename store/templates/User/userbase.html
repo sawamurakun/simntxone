@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'r11/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'r11/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'r11/css/owl.theme.default.min.css'%}">
+    <script src="{% static 'r11/js/jquery.min.js'%}"></script>
+    <script src="{% static 'r11/js/owl.carousel.min.js'%}"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'r11/css/style.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'r11/css/style-2.css'%}">
+      <style>
+        /**
+      * The CSS shown here will not be introduced in the Quickstart guide, but shows
+      * how you can use CSS to style your Element's container.
+      */
+      .StripeElement {
+        box-sizing: border-box;
+
+        height: 40px;
+
+        padding: 10px 12px;
+
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+      }
+
+      .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+      }
+
+      .StripeElement--invalid {
+        border-color: #fa755a;
+      }
+
+      .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;}
+
+      .form-row, .payment-form, .card-element, .submit-btn{
+        width: 100%;
+      }
+      </style>
+    <title>Stores Page</title>
+  </head>
+  <body>
+   
+
+
+
+<div class="container-fluid pl-0">
+
+          <div class="row vh-100">
+            <div class="col-md-3">
+                  <!-- <div class="logo">
+                      <a href="#"><img src="images/logo.png" width="100%" alt=""></a>
+                  </div> -->
+
+                  <div class="user-pro-div">
+                    <div class="user-img">
+                      {% if userac %}
+                      {% if userac.user_image.url != "" %}
+                      <img width="100px" height="250px" src="{{userac.user_image.url}}">
+                      {% else %}
+                      <img width="100px" height="250px" src="{% static 'r11/images/business-man-icon.jpg'%}">
+                      {% endif %}
+                      {% else %}
+                      <img width="100px" height="250px" src="{% static 'r11/images/business-man-icon.jpg'%}">
+                      {% endif %}
+                    </div>
+                    <div class="user-name">
+                      {% if userac %}
+                      <a href="/userprofileupdate">{{userac.first_name}} &nbsp;{{userac.last_name}}&nbsp;</a>
+                      {% else %}
+                      <a href="/userprofileupdate">{{username}}&nbsp;</a>
+                      {% endif %}
+                    </div>
+                    <div class="user-name">
+                      
+                      <a href="/UserLogout">Logout</a>
+                    </div>
+                    <div class="user-name">
+                      <a href="/userprofileupdate">Settings</a>
+                    </div>
+                   
+
+                    <div class="user-notifi">
+                      Notifications : 
+                    </div>
+                    <div class="notificationarea" style="height:410px; overflow-y: scroll; ">
+                      {% for notification in notifications %}
+
+                      <div class="card">
+                        <div class="card-body">
+                          <p>{{notification.notification}}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                          time:{{notification.notification_time}}
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+
+                  </div>
+                  
+            </div>
+
+            <div class="col-md-9">
+              <br>
+              <div class="row">
+                
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="info_bar">
+                        <h5 class="head-h5">SHOPPERS NEAR ME: <span> {{numberofstore}} </span></h5>
+                     </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="info_bar">
+                        <h5 class="head-h5">SHOPPERS ONLINE: <span> {{activestores}} </span></h5>
+                     </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                    
+                    <ul class="header-social">
+                      <li style="background-color: #3b5998"><a href="https://www.facebook.com/Simntx-LLC-107470381181474"><i class="fa fa-facebook"></i></a></li>
+                      <li style="background-color: #00acee"><a href="https://twitter.com/simntx"><i class="fa fa-twitter"></i></a></li>
+                      <li style="background-color: #db3236"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+
+                </div>
+
+              </div>
+
+              <br>
+
+              <div class="row">
+    
+                {% block content %}{% endblock %}
+
+                <div class="col-md-4 sider-right-fix">
+                    <div class="notifi-right">
+                      <div class="chat_box">
+                          <p></p>
+                          <div class="chat_inner">
+
+                              <div class="owl-carousel owl-theme noti-slider">
+                                {% for advertisement in advertisements %}
+                                <div class="item">
+                                  <img src="{{advertisement.advertising_image.url}}" width="120px" height="120px" alt="Natural" />
+                                </div>
+                                {% endfor %}
+                                  
+                              </div>
+
+                            
+                          </div>
+                      </div>
+                     
+                      
+
+
+                      {%load cart %}
+                      <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                <div class="chat_box">
+                                  <p>User Chat</p>
+                                  <div class="chat-part">
+                                    {% for st in allstores%}
+                                      <div class="chat-div" onclick="chat('{{st.id}}-{{st.store_name}}')">
+                                       
+                                        <input type="hidden" id="chat_id" value="{{st.id}}">
+                                        <div class="row">
+                                          <div class="col-3">
+                                            {% if st.store_image.url != "" %}
+                                            <img src="{{st.store_image.url}}">
+                                            {% else %}
+                                            <img width="40px" height="50px" src="{% static 'r7/images/business-man-icon.jpg'%}">
+                                            {% endif %}
+                                            <div class="chat-indi chat-live"></div>
+                                          </div>
+                                          <div class="col-9">
+                                            <h5>{{st.store_name}} <span>1</span> </h5>
+                                            <h6>10:25 pm - 20/12/2020</h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {% endfor %}
+                                      
+                                      {% comment %}       
+                                      <div class="chat-div">
+                                        <div class="row">
+                                          <div class="col-3">
+                                            <img src="images/business-man-icon.jpg">
+                                            <div class="chat-indi"></div>
+                                          </div>
+                                          <div class="col-9">
+                                            <h5>Name <span>8</span> </h5>
+                                            <h6>10:25 pm - 20/12/2020</h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {% endcomment %}
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                          <div class="chat_box">
+                              <p>User Order</p>
+                              <div class="chat-part">
+                                 <h5 style="text-align: center;margin-top: 20px;">Order</h5> 
+                                 <div class="table-responsive" style=" height:600px; overflow-y: scroll;" >
+                                  <table class="table  tbd-brd-non" >
+                                    <thead>
+                                      <tr>
+                                        <th colspan="2">Product Name</th>
+                                        <th>Product image</th>
+                                        <th>Date</th>
+                                        <th>Product Price</th>
+                                        <th>Product Quantity</th>
+                                        <th>Total Price</th>
+                                        <th>Status</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for order in orders %}
+                                      <tr>
+                                        <td colspan="2">{{order.product.product_name}}</td>
+                                        <td><img style="height:70px; width: 70px;" class="rounded-circle" src="{{order.product.product_image.url}}"></td>
+                                        <td>{{order.date}}</td>
+                                        <td>{{order.price}}</td>
+                                        <td>{{order.quantity}}</td>
+                                        <td>{{order.quantity|multiply:order.price}}</td>
+          
+                                        <td>
+                                         {% if order.status %}
+                                         <small class="badge badge-success">Completed</small>
+                                         {% else %}
+                                         <small class="badge badge-warning">Pending</small>
+                                         {% endif %}
+                                        </td>
+                                      </tr>
+                                      {% endfor %} 
+                                    </tbody>
+          
+                                    
+                                  </table>
+                                  
+                                  <div class="m-3 p-3">
+                                      
+                                      <!-- Button trigger modal -->
+          
+          
+                                  </div>
+          
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                         
+                              <div class="chat_box">
+                                  <p>User Cart</p>
+                                  <div class="chat-part">
+                                     <h5 style="text-align: center;margin-top: 20px;">Cart</h5> 
+                                     <div class="table-responsive">
+                                      <table class="table  tbd-brd-non">
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Product Name</th>
+                                            <th>Product image</th>
+                                            <th>Product Price</th>
+                                            <th>Product Quantity</th>
+                                            <th>Total Price</th>
+                                            <th>Action</th>
+                                          </tr>
+                                        </thead>
+                                        {% if request.session.cart.keys|length > 0 %}
+                                        <tbody>
+                                         
+                                          {% for product in cartproducts %}
+                                          <tr>
+                                            <td colspan="2">{{product.product_name}}</td>
+                                            <td><img style="height:70px; width: 70px;" class="rounded-circle" src="{{product.product_image.url}}"></td>
+                                            <td>{{product.product_price}}</td>
+                                            <td>{{product|cart_quantity:request.session.cart}}</td>
+                                            <td>{{product|price_total:request.session.cart}}</td>
+              
+                                            <td>
+                                              <a href="/EditProduct/{{product.id}}"><i class="fa fa-pencil-square-o" style="color: green; cursor: pointer;" ></i></a>
+                                              &nbsp;
+                                              <a href="/DeleteProduct/{{category.id}}"><i class="fa fa-trash-o" style="color: red; cursor: pointer;" ></i></a>
+                                            </td>
+                                          </tr>
+                                          {% endfor %} 
+                                        </tbody>
+                                        <tfoot>
+                                            <tr><th colspan="4">Total</th>
+                                              <th>{{cartproducts|total_cart_price:request.session.cart}}</th>
+                                          </tr>
+                                            
+                                        </tfoot>
+                                        {% endif %}
+                                        
+                                      </table>
+                                      
+                                      
+                                    </div>
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              <div class="chat_box">
+                                  <p>Checkout</p>
+                                  <div class="chat-part">
+                                    <div class="container">
+                                      <h5 style="text-align: center;margin-top: 20px;">Checkout</h5> 
+
+                                      
+
+                                      <form action="/charge" method="POST" id="payment-form" class="payment-form">{% csrf_token %}
+                                        <div class="form-group">
+                                          <label for="">Address</label>
+                                          <input type="text" name="address" id="" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Phone</label>
+                                            <input type="text" name="phone" id="" class="form-control" placeholder="">
+                                        </div>
+                                        {% if request.session.cart.keys|length > 0 %}
+                                          <input type="hidden" name="total_price" value="{{cartproducts|total_cart_price:request.session.cart}}">
+                                        {% endif %}
+                                        <div class="form-row">
+                                          <label for="card-element">
+                                            Credit or debit card
+                                          </label>
+                                          <div id="card-element" class="card-element">
+                                            <!-- A Stripe Element will be inserted here. -->
+                                          </div>
+
+                                          <!-- Used to display form errors. -->
+                                          <div id="card-errors" role="alert"></div>
+                                        </div>
+                                        
+                                        <button class="btn btn-info submit-btn" {% if request.session.cart.keys|length < 1 %} disabled {% endif %} type="submit">Submit Payment</button>
+                                        
+                                      </form>
+
+                                      {% comment %}
+                                        
+                                      <form action="/charge" method="POST">{% csrf_token %}
+                                          <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{key}}" data-descrption="Payment Gateway" data-amount="500" data-locale="auto"></script>
+                                      </form>
+                                      {% endcomment %}
+                                      <div>
+                                        &nbsp;&nbsp;
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                        </div>
+                      </div>
+
+                     
+                      <div class="nav box-div" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                          <div class=" active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                            <i class="fa fa-comments-o"></i>
+                          </div>
+                          <div class="" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                            <i class="fa fa-cubes"></i>
+                          </div>
+                          <div class="" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            <i class="fa fa-shopping-cart">({{request.session.cart.keys|length}})</i>
+                          </div>
+                          <div class="" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                            <i class="fa fa-circle"></i>
+                          </div>
+                      </div>
+
+                        
+                        
+
+   
+
+
+
+                      <br>
+                      <div>
+                        <a href="/storepage" class="btn pro-click-btn">Store</a>
+                        <a href="/userprofileupdate" class="btn pro-click-btn">Profile</a>
+                        <a href="javascript:history.go(-1)" class="btn pro-click-btn">Back</a>
+                      </div>
+
+                      
+                    </div>
+                </div>
+
+              </div>
+              
+
+            </div>
+
+
+            
+
+          </div>
+
+        
+
+  
+</div>
+
+
+
+
+
+
+
+<footer class="footer-fix">
+  
+  <div class="container">
+      <div class="row">
+          <ul>
+              <li><a href="/about" target="_blank" rel="noopener noreferrer">About us</a></li>
+              <li><a href="/contact" target="_blank" rel="noopener noreferrer">Contact</a></li>
+              <li><a href="/career" target="_blank" rel="noopener noreferrer">Career</a></li>
+
+          </ul>
+      </div>
+  </div>
+
+</footer>
+
+
+
+
+
+<div class="messenger-div">
+ 
+  {% comment %}
+    <div class="m-head">
+      Name
+      <span><i class="fa fa-times m-hide"></i></span>
+    </div>
+    <div class="m-body">
+      <div class="m-b-left">
+          <p>Hello</p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-right">
+          <p>Hello</p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-left">
+          <p><img src="images/30100.jpg" style="width: 150px;margin: 10px 0px;"></p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-right">
+          <p><img src="images/30100.jpg" style="width: 150px;margin: 10px 0px;"></p>
+          <span>10:30 pm</span>
+      </div>
+    </div>
+    <div class="m-footer">
+        <div class="row">
+          <div class="col-10">
+            <input type="text" class="form-control" placeholder="Type Message">
+          </div>
+          <div class="col-2">
+            <button class="m-send-btn"><i class="fa fa-paper-plane"></i></button>
+           <!--  <i class="fa fa-chain-broken my-costom-fa" aria-hidden="true"></i>
+            <i class="fa fa-smile-o my-costom-fa" aria-hidden="true"></i> -->
+          </div>
+        </div>
+    </div>
+    {% endcomment %}
+</div>
+
+
+<script type="text/javascript">
+  $(".m-hide").click(function(){
+    $(".messenger-div").hide(200);
+  });
+
+  $(".chat-div").click(function(){
+    var id=document.getElementById('chat_id').value;
+    
+    $(".messenger-div").show(200);
+  });
+
+  function closediv(id){
+    console.log(id);
+    $(".messenger-div").hide(200);
+  }
+
+  function chat(param){
+    var paramsplit=param.split("-");
+    //var store=store_name;
+    console.log(paramsplit);
+
+    var id=paramsplit[0];
+    var store_name=paramsplit[1];
+
+    console.log(id);
+    console.log({{userac.id}});
+    $(".messenger-div").hide();
+
+
+    
+    var wrapper = $('.messenger-div');
+    wrapper.empty();
+    var stid=id;
+    
+    var fieldhtml='<div class="m-head">'+ store_name+'<span><i class="fa fa-times m-hide" onclick="closediv('+id+')"></i></span></div><div class="m-body">';
+    {% for ch in chats %}
+      {% if ch.msgfromusertype == "User" %}
+      console.log(String(id));
+      console.log({{ch.msgto}});
+      console.log("vendor");
+      console.log(({{ch.msgfrom}}==={{userac.id}})&&(String({{ch.msgto}})===String(id)));
+        if(({{ch.msgfrom}}==={{userac.id}})&&(String({{ch.msgto}})===String(id)))
+       {
+          fieldhtml+='<div class="m-b-left"><p>{{ch.msg}}</p><span>{{ch.msgtime}}</span></div>';
+       }
+      {% endif %}
+      {% if ch.msgfromusertype == "Vendor" %}
+      console.log((String({{ch.msgfrom}})===String(id))&&(String({{ch.msgto}})===String({{userac.id}})));
+      if((String({{ch.msgfrom}})===String(id)))
+       {
+        fieldhtml+='<div class="m-b-right"><p>{{ch.msg}}</p><span>{{ch.msgtime}}</span></div>';
+       }
+      
+      
+      {% endif %}
+      {% endfor %}
+    fieldhtml+='</div><div class="m-footer"><form id="formchat">{% csrf_token %}<div class="row"> <div class="col-10"><input type="hidden" id="vendor_id" name="vendor_id" value="'+id+'"><input type="hidden" id="store_name" name="store_name" value="'+store_name+'"><input type="hidden" id="user_id" name="user_id" value="{{userac.id}}"><input type="text" name="msg" id="msg" class="form-control" placeholder="Type Message"></div><div class="col-2"><button type="click" id="chtsbmit" class="m-send-btn"><i class="fa fa-paper-plane"></i></button></div></div></form></div>';
+    console.log(fieldhtml);
+    wrapper.append(fieldhtml);
+
+    
+  }
+
+</script>
+
+<script type="text/javascript">
+
+  $(document).on('submit','#formchat',function(e){
+    e.preventDefault();
+    var user_id=$("#user_id").val();
+    var vendor_id=$("#vendor_id").val();
+    var store_name=$("#store_name").val();
+    $.ajax({
+      type:'get',
+      url:'/userchat',
+      data:{
+        vendor_id:$("#vendor_id").val(),
+        msg:$("#msg").val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+      },
+      success:function(response){
+        
+        var wrapper = $('.messenger-div');
+        wrapper.empty();
+        
+        var fieldhtml='<div class="m-head">'+store_name+' <span><i class="fa fa-times m-hide" onclick="closediv('+vendor_id+')"></i></span></div><div class="m-body">';
+        
+        console.log("user_id"+user_id);
+        console.log("vendor_id"+vendor_id);
+        console.log(fieldhtml);
+        for(var key in response.chats){
+          
+          if(response.chats[key].msgfromusertype === "User"){
+            
+
+            console.log((response.chats[key].msgfrom === user_id));
+            if((response.chats[key].msgfrom === user_id) && (response.chats[key].msgto === vendor_id)){
+            fieldhtml+='<div class="m-b-left"> <p>'+response.chats[key].msg+'</p><span>'+response.chats[key].msgtime+'</span></div>';
+              console.log(fieldhtml);
+            }
+          }
+          if(response.chats[key].msgfromusertype === "Vendor"){
+            console.log("Vendor")
+            if(response.chats[key].msgfrom === vendor_id){
+              fieldhtml+='<div class="m-b-right"><p>'+response.chats[key].msg+'</p><span>'+response.chats[key].msgtime+'</span></div>';
+              console.log(fieldhtml);
+            }
+          }
+        }
+        
+        fieldhtml+='</div><div class="m-footer"><form id="formchat">{% csrf_token %}<div class="row"> <div class="col-10"><input type="hidden" id="vendor_id" name="vendor_id" value="'+vendor_id+'"><input type="hidden" id="store_name" name="store_name" value="'+store_name+'"><input type="hidden" id="user_id" name="user_id" value="'+user_id+'"><input type="text" name="msg" id="msg" class="form-control" placeholder="Type Message"></div><div class="col-2"><button type="click" id="chtsbmit" class="m-send-btn"><i class="fa fa-paper-plane"></i></button></div></div></form></div>';
+        console.log("result print");
+        wrapper.append(fieldhtml);
+      }
+
+    });
+  });
+
+</script>
+
+
+
+<script>
+  $('.owl-carousel.product-slider').owlCarousel({
+      loop:false,
+      margin:10,
+      nav:true,
+      dots:false,
+      navText: [
+        "<i class='fa fa-long-arrow-left'></i>",
+        "<i class='fa fa-long-arrow-right'></i>"
+      ],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:2
+          },
+          1000:{
+              items:3
+          }
+      }
+  })
+</script>
+
+
+<link href="{% static 'r11/css/animate.min.css'%}" rel="stylesheet" />
+
+
+
+<script>
+  $('.owl-carousel.noti-slider').owlCarousel({
+      loop:true,
+      animateOut: 'fadeOut',
+      animateIn: 'fadeIn',
+      touchDrag:false,
+      pullDrag:false,
+      mouseDrag:false,
+      freeDrag:false,
+      margin:10,
+      nav:false,
+      dots:false,
+      autoplay:true,
+      autoplayTimeout:9000,
+      autoplayHoverPause:false,
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:1
+          },
+          1000:{
+              items:1
+          }
+      }
+  })
+</script>
+<script>
+  $('.owl-carousel.mini-slider').owlCarousel({
+      loop:false,
+      margin:10,
+      nav:true,
+      dots:false,
+      navText: [
+        "<i class='fa fa-long-arrow-left'></i>",
+        "<i class='fa fa-long-arrow-right'></i>"
+      ],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:4
+          },
+          1000:{
+              items:4
+          }
+      }
+  })
+</script>
+
+
+<link href="{% static 'r11/css/animate.min.css'%}" rel="stylesheet" />
+
+<script>
+  $('.owl-carousel.noti-slider').owlCarousel({
+      loop:true,
+      animateOut: 'fadeOut',
+      animateIn: 'fadeIn',
+      touchDrag:false,
+      pullDrag:false,
+      mouseDrag:false,
+      freeDrag:false,
+      margin:10,
+      nav:false,
+      dots:false,
+      autoplay:true,
+      autoplayTimeout:9000,
+      autoplayHoverPause:false,
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:1
+          },
+          1000:{
+              items:1
+          }
+      }
+  })
+</script>
+
+<script>
+  // Create a Stripe client.
+var stripe = Stripe('pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+// Handle real-time validation errors from the card Element.
+card.on('change', function(event) {
+  var displayError = document.getElementById('card-errors');
+  if (event.error) {
+    displayError.textContent = event.error.message;
+  } else {
+    displayError.textContent = '';
+  }
+});
+
+// Handle form submission.
+var form = document.getElementById('payment-form');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  stripe.createToken(card).then(function(result) {
+    if (result.error) {
+      // Inform the user if there was an error.
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server.
+      stripeTokenHandler(result.token);
+    }
+  });
+});
+
+// Submit the form with the token ID.
+function stripeTokenHandler(token) {
+  // Insert the token ID into the form so it gets submitted to the server
+  var form = document.getElementById('payment-form');
+  var hiddenInput = document.createElement('input');
+  hiddenInput.setAttribute('type', 'hidden');
+  hiddenInput.setAttribute('name', 'stripeToken');
+  hiddenInput.setAttribute('value', token.id);
+  form.appendChild(hiddenInput);
+
+  // Submit the form
+  form.submit();
+}
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="{% static 'r11/js/popper.min.js'%}"></script>
+    <script src="{% static 'r11/js/bootstrap.min.js'%}"></script>
+  </body>
+</html>
+

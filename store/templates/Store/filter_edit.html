@@ -1,0 +1,35 @@
+{% extends 'Store/store_base.html' %}
+{%block content %}
+
+<div class="col-md-7">
+                        
+  <div class="pro-div-heading">
+      <h3 style="color: black;">Edit Filter</h3>
+  </div>
+
+  <br><br>
+  <form action="/EditFilter/{{filter.id}}" method="POST" class="" id="" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+
+
+      <div class="col-md-12"> 
+        <div class="form-group">
+          <label>Filter Name:</label>
+          <input class="form-control costom-input" required value="{{filter.filter_name}}" type="text" name="filter_name" placeholder="Filter Name">
+        </div>
+      </div>
+
+      
+    </div>
+    <button class="btn pro-click-btn" type="submit">Edit Filter</button>
+  </form>
+
+
+    
+
+  <br>
+
+  
+</div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'Store/store_base.html' %}
+{%block content %}
+<div class="col-md-7">
+                        
+  <div class="pro-div-heading">
+          <h3 style="color: #cb08e8;">Filter List</h3>
+      </div>
+
+        <br><br>
+      <h5><a href="/Addfilter"> Add Filter</a></h5>  
+    <div class="table-responsive">
+      <table class="table  tbd-brd-non">
+        <thead>
+          <tr>
+            <th colspan="2">Filter Name</th>
+            <th>Filter Category</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for filter in filters %}
+          <tr>
+            <td colspan="2">{{filter.filter_name}}</td>
+            {% for cat in categories %}
+                {% if cat.id == filter.filter_category %}
+                    <td>{{cat.name}}</td>
+                {% endif %}
+            {% endfor %}
+            <td>{{filter.status}}</td>
+            <td>
+              <a href="/EditFilter/{{filter.id}}"><i class="fa fa-pencil-square-o" style="color: green; cursor: pointer;" ></i></a>
+              &nbsp;
+              <a href="/DeleteFilter/{{filter.id}}"><i class="fa fa-trash-o" style="color: red; cursor: pointer;" ></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+        
+      </table>
+
+    </div>
+
+      <br>
+
+</div>
+
+{% endblock %}

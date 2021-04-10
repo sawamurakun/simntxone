@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'r11/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="{% static 'r11/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'r11/css/owl.theme.default.min.css'%}">
+    <script src="{% static 'r11/js/jquery.min.js'%}"></script>
+    <script src="{% static 'r11/js/owl.carousel.min.js'%}"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'r11/css/style.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'r11/css/style-2.css'%}">
+
+    <title>Stores Page</title>
+    <style>
+      /**
+    * The CSS shown here will not be introduced in the Quickstart guide, but shows
+    * how you can use CSS to style your Element's container.
+    */
+    .StripeElement {
+      box-sizing: border-box;
+
+      height: 40px;
+
+      padding: 10px 12px;
+
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: white;
+
+      box-shadow: 0 1px 3px 0 #e6ebf1;
+      -webkit-transition: box-shadow 150ms ease;
+      transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+      box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+      border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+      background-color: #fefde5 !important;}
+
+    .form-row, .payment-form, .card-element, .submit-btn{
+      width: 100%;
+    }
+    </style>
+  </head>
+  <body>
+   
+
+
+
+<div class="container-fluid pl-0">
+
+          <div class="row vh-100">
+            <div class="col-md-3">
+                  <!-- <div class="logo">
+                      <a href="#"><img src="images/logo.png" width="100%" alt=""></a>
+                  </div> -->
+                  <div class="user-pro-div">
+                    <div class="user-img">
+                      {% if userac.user_image.url != "" %}
+                      <img width="100px" height="250px" src="{{userac.user_image.url}}">
+                      {% else %}
+                      <img width="100px" height="250px" src="{% static 'r11/images/business-man-icon.jpg'%}">
+                      {% endif %}
+                    </div>
+                    <div class="user-name">
+                      {{userac.first_name}} &nbsp;{{userac.last_name}}&nbsp;
+                    </div>
+                    <div class="user-name">
+                      <a href="/UserLogout">Logout</a>
+                    </div>
+                    <div class="user-name">
+                      <a href="/userprofileupdate">settings</a>
+                    </div>
+                  
+
+                    <div class="user-notifi">
+                      Notifications : 
+                    </div>
+                    <div class="notificationarea" style="height:410px; overflow-y: scroll; ">
+                      {% for notification in notifications %}
+
+                      <div class="card">
+                        <div class="card-body">
+                          <p>{{notification.notification}}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                          time:{{notification.notification_time}}
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+
+                  </div>
+            </div>
+
+            <div class="col-md-9">
+              <br>
+              <div class="row">
+                    <div class="col-md-9">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="info_bar">
+                            <h5 class="head-h5">SHOPPERS NEAR ME: <span> {{numberofstore}} </span></h5>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="info_bar">
+                            <h5 class="head-h5">SHOPPERS ONLINE: <span> {{numberofstore}} </span></h5>
+                         </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="header-social">
+                        <li style="background-color: #3b5998"><a href="https://www.facebook.com/Simntx-LLC-107470381181474"><i class="fa fa-facebook"></i></a></li>
+                        <li style="background-color: #00acee"><a href="https://twitter.com/simntx"><i class="fa fa-twitter"></i></a></li>
+                        <li style="background-color: #db3236"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+              </div>
+              <br>
+
+              <div class="row">
+   
+                <div class="col-md-8">
+                        
+                        <div class="pro-div-heading">
+                            <h3>{{products.product_name}}</h3>
+                            <!-- <h6>BY:SIMNTX</h6> -->
+                            <h3>{{store_name.store_name}}</h3>
+                        </div>
+
+                         <br>
+                      <div class="middel-div">
+                      
+
+                    <div class="product_box similar_items">
+                        <h3 class="font-change-1">SIMILAR ITEMS BY:</h3>
+                        <div class="inner_box">
+                          {% for product in productssimilar %}
+                             <div class="items"><a href="/product/{{product.id}}"><img src="{{product.product_image.url}}"></a></div>
+                          {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="also_sec font-change-2">
+                        <h3 style="border-bottom: 1px solid black;">RETURN TO:</h3>
+
+                        <div class="owl-carousel owl-theme mini-slider owl-nav-change"> 
+                             <div class="item">
+                               <div class="also_box">
+                                  <a href="/storepage">SIMNTX HOME PAGE</a>
+                              </div>
+                             </div>
+                             <div class="item">
+                               <div class="also_box">
+                                  <a href="/products/{{products.store_id}}">{{products.product_name}} HOME</a>
+                              </div>
+                             </div>
+                             {% comment %}
+                             <div class="item">
+                               <div class="also_box">
+                                  <a href="#">Stores</a>
+                              </div>
+                             </div>
+                             {% endcomment %}
+                          
+                          </div>
+
+                        
+                        
+                        
+                        
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-4 sider-right-fix">
+
+                    <div class="notifi-right" style="height: auto;">
+                        <div class="chat_box">
+                            <p>{{products.product_name}}</p>
+                            <div class="chat_inner" style="display: block;">
+                                  
+                                  <div class="right-mini-add">
+                                    <span>White</span>
+                                  </div>
+                                  <div class="right-mini-add">
+                                    <span>SIZE</span>
+                                  </div>
+                                  <img style="width: 150px; height: 150px;" src="{{products.product_image.url}}">
+
+                            </div>
+                        </div>
+                      
+                      </div>
+
+                    
+                      <div class="notifi-right-22">
+                        {%load cart %}
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                <div class="cart_items">
+                                  <div class="cart_price">
+                                    <input type="hidden" id="tax" value="{{store_name.store_tax}}">
+                                    <input type="hidden" id="delivery_fee" value="{{store_name.store_delivery_fees}}">
+                                    <input type="hidden" id="product_price" value="{{products.product_price}}">
+                                    <input type="hidden" id="coupon_disc" >
+                                    <p><span><b>TOTAL COST:</b></span><span id="total_cost">${{products.product_price}}</span></p>
+                                    <p><span><b>TAX:</b></span><span>{{store_name.store_tax}}%</span></p>
+                                    <p><span><b>DELIVERY FEE:</b></span><span>${{store_name.store_delivery_fees}}</span></p>
+                                    <p><span><b>ITEM PRICE:</b></span><span>${{products.product_price}}</span></p>
+                                    <input type="hidden" id="product_id" value="{{products.id}}">
+                                    <p><span><b>COUPON: <input type="text" id="coupon_code" name="coupon_code"><button id="applycoupon" type="submit">Apply Coupon</button></b></span><span id="coupon_discount"></span></p>
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                              <div class="chat_box">
+                                  <p>User Order</p>
+                                  <div class="chat-part">
+                                     <h5 style="text-align: center;margin-top: 20px;">Order</h5> 
+                                     <div class="table-responsive" style=" height:600px; overflow-y: scroll;" >
+                                      <table class="table  tbd-brd-non" >
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Product Name</th>
+                                            <th>Product image</th>
+                                            <th>Date</th>
+                                            <th>Product Price</th>
+                                            <th>Product Quantity</th>
+                                            <th>Total Price</th>
+                                            <th>Status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for order in orders %}
+                                          <tr>
+                                            <td colspan="2">{{order.product.product_name}}</td>
+                                            <td><img style="height:70px; width: 70px;" class="rounded-circle" src="{{order.product.product_image.url}}"></td>
+                                            <td>{{order.date}}</td>
+                                            <td>{{order.price}}</td>
+                                            <td>{{order.quantity}}</td>
+                                            <td>{{order.quantity|multiply:order.price}}</td>
+              
+                                            <td>
+                                             {% if order.status %}
+                                             <small class="badge badge-success">Completed</small>
+                                             {% else %}
+                                             <small class="badge badge-warning">Pending</small>
+                                             {% endif %}
+                                            </td>
+                                          </tr>
+                                          {% endfor %} 
+                                        </tbody>
+              
+                                        
+                                      </table>
+                                      
+                                      <div class="m-3 p-3">
+                                          
+                                          <!-- Button trigger modal -->
+              
+              
+                                      </div>
+              
+                                    </div>
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                         
+                              <div class="chat_box">
+                                  <p>User Cart</p>
+                                  <div class="chat-part">
+                                     <h5 style="text-align: center;margin-top: 20px;">Cart</h5> 
+                                     <div class="table-responsive">
+                                      <table class="table  tbd-brd-non">
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Product Name</th>
+                                            <th>Product image</th>
+                                            <th>Product Price</th>
+                                            <th>Product Quantity</th>
+                                            <th>Total Price</th>
+                                            <th>Action</th>
+                                          </tr>
+                                        </thead>
+                                        {% if request.session.cart.keys|length > 0 %}
+                                          <tbody>
+                                          
+                                            {% for product in cartproducts %}
+                                            <tr>
+                                              <td colspan="2">{{product.product_name}}</td>
+                                              <td><img style="height:70px; width: 70px;" class="rounded-circle" src="{{product.product_image.url}}"></td>
+                                              <td>{{product.product_price}}</td>
+                                              <td>{{product|cart_quantity:request.session.cart}}</td>
+                                              <td>{{product|price_total:request.session.cart}}</td>
+                
+                                              <td>
+                                                <a href="/EditProduct/{{product.id}}"><i class="fa fa-pencil-square-o" style="color: green; cursor: pointer;" ></i></a>
+                                                &nbsp;
+                                                <a href="/DeleteProduct/{{category.id}}"><i class="fa fa-trash-o" style="color: red; cursor: pointer;" ></i></a>
+                                              </td>
+                                            </tr>
+                                            {% endfor %} 
+                                          </tbody>
+                                          <tfoot>
+                                              <tr><th colspan="4">Total</th>
+                                                <th>{{cartproducts|total_cart_price:request.session.cart}}</th>
+                                            </tr>
+                                              
+                                          </tfoot>
+                                        {% endif %}
+                                        
+                                      </table>
+                                      
+                                      
+                                    </div>
+                                  </div>
+                              </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                          <div class="chat_box">
+                            <p>Checkout</p>
+                            <div class="chat-part">
+                              <div class="container">
+                                <h5 style="text-align: center;margin-top: 20px;">Checkout</h5> 
+
+                                
+
+                                <form action="/charge" method="POST" id="payment-form" class="payment-form">{% csrf_token %}
+                                  <div class="form-group">
+                                    <label for="">Address</label>
+                                    <input type="text" name="address" id="" class="form-control" placeholder="">
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="">Phone</label>
+                                      <input type="text" name="phone" id="" class="form-control" placeholder="">
+                                  </div>
+                                  {% if request.session.cart.keys|length > 0 %}
+                                    <input type="hidden" name="total_price" value="{{cartproducts|total_cart_price:request.session.cart}}">
+                                  {% endif %}
+                                  <div class="form-row">
+                                    <label for="card-element">
+                                      Credit or debit card
+                                    </label>
+                                    <div id="card-element" class="card-element">
+                                      <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+                                  </div>
+                                  
+                                  <button class="btn btn-info submit-btn" {% if request.session.cart.keys|length < 1 %} disabled {% endif %} type="submit">Submit Payment</button>
+                                  
+                                </form>
+
+                                {% comment %}
+                                  
+                                <form action="/charge" method="POST">{% csrf_token %}
+                                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{key}}" data-descrption="Payment Gateway" data-amount="500" data-locale="auto"></script>
+                                </form>
+                                {% endcomment %}
+                                <div>
+                                  &nbsp;&nbsp;
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        </div>
+                      </div>
+
+
+                    <div class="nav box-div" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                          <div class=" active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                            <i class="fa fa-comments-o"></i>
+                          </div>
+                          <div class="" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                            <i class="fa fa-cubes"></i>
+                          </div>
+                          <div class="" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            <i class="fa fa-shopping-cart">({{request.session.cart.keys|length}})</i>
+                          </div>
+                          <div class="" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                            <i class="fa fa-circle"></i>
+                          </div>
+                      </div>
+                      
+                       <br>
+                      <div>
+                        <button class="btn pro-click-btn">Profile</button>
+                        <a class="btn pro-click-btn" href="/storepage">Home</a>
+                        <a href="javascript:history.go(-1)" class="btn pro-click-btn">Back</a>
+                      </div>
+                </div>
+              </div>
+
+
+
+              </div>
+
+            </div>
+
+            
+
+          </div>
+
+     
+  
+</div>
+
+
+
+
+
+
+
+<footer class="footer-fix">
+  
+  <div class="container">
+      <div class="row">
+          <ul>
+            <li><a href="/about" target="_blank" rel="noopener noreferrer">About us</a></li>
+            <li><a href="/contact" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="/career" target="_blank" rel="noopener noreferrer">Career</a></li>
+
+          </ul>
+      </div>
+  </div>
+
+</footer>
+
+
+
+
+<script>
+  $('.owl-carousel.product-slider').owlCarousel({
+      loop:true,
+      margin:10,
+      nav:true,
+      dots:false,
+      navText: [
+        "<i class='fa fa-long-arrow-left'></i>",
+        "<i class='fa fa-long-arrow-right'></i>"
+      ],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:2
+          },
+          1000:{
+              items:2
+          }
+      }
+  })
+</script>
+
+<script>
+  $('.owl-carousel.mini-slider').owlCarousel({
+      loop:false,
+      margin:10,
+      nav:true,
+      dots:false,
+      navText: [
+        "<i class='fa fa-long-arrow-left'></i>",
+        "<i class='fa fa-long-arrow-right'></i>"
+      ],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:3
+          },
+          1000:{
+              items:3
+          }
+      }
+  })
+</script>
+<script>
+  // Create a Stripe client.
+var stripe = Stripe('pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+// Handle real-time validation errors from the card Element.
+card.on('change', function(event) {
+  var displayError = document.getElementById('card-errors');
+  if (event.error) {
+    displayError.textContent = event.error.message;
+  } else {
+    displayError.textContent = '';
+  }
+});
+
+// Handle form submission.
+var form = document.getElementById('payment-form');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  stripe.createToken(card).then(function(result) {
+    if (result.error) {
+      // Inform the user if there was an error.
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server.
+      stripeTokenHandler(result.token);
+    }
+  });
+});
+
+// Submit the form with the token ID.
+function stripeTokenHandler(token) {
+  // Insert the token ID into the form so it gets submitted to the server
+  var form = document.getElementById('payment-form');
+  var hiddenInput = document.createElement('input');
+  hiddenInput.setAttribute('type', 'hidden');
+  hiddenInput.setAttribute('name', 'stripeToken');
+  hiddenInput.setAttribute('value', token.id);
+  form.appendChild(hiddenInput);
+
+  // Submit the form
+  form.submit();
+}
+</script>
+<script type="text/javascript">
+
+  $(document).on('click','#applycoupon',function(e){
+    e.preventDefault();
+    var coupon_code=$("#coupon_code").val();
+
+    $.ajax({
+      type:'get',
+      url:'/applycoupon',
+      data:{
+        coupon_code:$("#coupon_code").val(),
+        product_id:$("#product_id").val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+      },
+      success:function(response){
+        $("#coupon_discount").empty();
+        console.log(response.coupon_discount);
+        if(response.coupon_discount !== "Invalid Coupon Code"){
+          $("#coupon_discount").append(response.coupon_discount);
+          $("#coupon_disc").val(response.coupon_discount);
+          var coupon_disc= $("#coupon_disc").val();
+          var tax=$("#tax").val();
+          var delivery_fee=$("#delivery_fee").val();
+          var product_price=$("#product_price").val();
+          var total=(parseInt(product_price)-(parseInt(product_price)*(parseInt(coupon_disc)/100)))+parseInt(tax)+parseInt(delivery_fee);
+          console.log(total);
+          $("#total_cost").append(total);
+        }
+        
+      }
+
+    });
+  });
+
+</script>
+<script type="text/javascript">
+  var coupon_disc= $("#coupon_disc").val();
+  var tax=$("#tax").val();
+  var delivery_fee=$("#delivery_fee").val();
+  var product_price=$("#product_price").val();
+  console.log(coupon_disc);
+  console.log(tax);
+  console.log(delivery_fee);
+  console.log(product_price);
+  var total=parseInt(product_price)+parseInt(tax)+parseInt(delivery_fee);
+  $("#total_cost").empty();
+  $("#total_cost").append("$"+total);
+  console.log(total);
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="{% static 'r11/js/popper.min.js'%}"></script>
+    <script src="{% static 'r11/js/bootstrap.min.js'%}"></script>
+  </body>
+</html>
+
+

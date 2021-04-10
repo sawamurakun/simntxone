@@ -1,0 +1,445 @@
+{% extends 'Store/store_base.html' %}
+{%block content %}
+<div class="col-md-7">
+                        
+  <div class="pro-div-heading">
+      <h3 style="color: black;">Edit Coupon</h3>
+  </div>
+
+  <br><br>
+  <form action="/EditCoupon/{{coupons.id}}" method="POST" class="" id="" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+
+
+      <div class="col-md-12"> 
+        <div class="form-group">
+          <label>Coupons:</label>
+          <input class="form-control costom-input" required value="{{coupons.coupon_code}}" type="text" name="coupon_code" placeholder="Coupon Code">
+          <input class="form-control costom-input" required value="{{coupons.coupon_discount}}" type="text" name="coupon_discount" placeholder="Coupon Disscount">
+        </div>
+      </div>
+      <div class="col-md-12"> 
+        <div class="form-group">
+        <button type="submit" class="btn pro-click-btn">Edit</button>
+        </div>
+      </div>
+
+
+    </div>
+  </form>
+
+
+    
+
+  <br>
+
+  
+</div>
+
+{% endblock %}
+{% comment %}
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'r13/css/bootstrap.min.css'%}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static 'r13/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'r13/css/owl.theme.default.min.css' %}">
+    <script src="{% static 'r13/js/jquery.min.js' %}"></script>
+    <script src="{% static 'r13/js/owl.carousel.min.js' %}"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'r13/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'r13/css/style-2.css' %}">
+
+    <title>Stores Category Edit </title>
+  </head>
+  <body>
+   
+
+
+
+<div class="container-fluid pl-0">
+
+          <div class="row ">
+            <div class="col-md-3">
+              <!-- <div class="logo">
+                  <a href="#"><img src="images/logo.png" width="100%" alt=""></a>
+              </div> -->
+              
+              <div class="user-pro-div">
+                <div class="user-img">
+                  
+                  {% if storeac.store_image.url != "" %}
+                  <img width="100px" height="250px" src="{{storeac.store_image.url}}">
+                  {% else %}
+                  <img width="100px" height="250px" src="{% static 'r3/images/business-man-icon.jpg'%}">
+                  {% endif %}
+                </div>
+                <div class="user-name">
+                  <div class="row">
+                    <div class="col"><span style="color: #ff3300;font-size: 20px;font-weight: bold;">{{storeac.store_name}} </span></div>
+                   
+                  </div>
+                </div>
+                <div class="user-name">
+                  <div class="row">
+                  
+                    <div class="col"><span style="color: #ff3300;font-size: 20px;font-weight: bold;"><a href="Storelogout">Logout</a> </span></div>
+                  </div>
+                </div>
+                <div class="user-name">
+                  <div class="row">
+                    <div class="col"><span style="color: #ff3300;font-size: 20px;font-weight: bold;"><a href="/Storeaccount">Settings</a> </span></div>
+                  </div>
+                </div>
+                <div class="user-notifi">
+                  Notifications : 
+                </div>
+                <div class="notificationarea" style="height:410px; overflow-y: scroll; ">
+                  {% for notification in notifications %}
+
+                  <div class="card">
+                    <div class="card-body">
+                      <p>{{notification.notification}}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                      time:{{notification.notification_time}}
+                    </div>
+                  </div>
+                  {% endfor %}
+                  </div>
+
+              
+                
+              </div>
+
+
+            </div>
+
+            <div class="col-md-9">
+              <br>
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="info_bar">
+                        <h5 class="head-h5">SHOPPERS NEAR ME: <span> 45 </span></h5>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="info_bar">
+                        <h5 class="head-h5">SHOPPERS ONLINE: <span> 246 </span></h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                    <ul class="header-social">
+                      <li style="background-color: #3b5998"><a href="https://www.facebook.com/Simntx-LLC-107470381181474"><i class="fa fa-facebook"></i></a></li>
+                      <li style="background-color: #00acee"><a href="https://twitter.com/simntx"><i class="fa fa-twitter"></i></a></li>
+                      <li style="background-color: #db3236"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+                </div>
+              </div>
+
+              <br>
+              <form action="/EditCategory/{{category.id}}" method="POST" class="" id="" enctype="multipart/form-data">{% csrf_token %}
+              <div class="row">
+   
+                <div class="col-md-7">
+                        
+                  <div class="pro-div-heading">
+                      <h3 style="color: black;">Insert Category</h3>
+                  </div>
+
+                  <br><br>
+
+                  <div class="row">
+
+
+                    <div class="col-md-12"> 
+                      <div class="form-group">
+                        <label>Category:</label>
+                        <input class="form-control costom-input" required value="{{category.name}}" type="text" name="category_name" placeholder="Category Name">
+                      </div>
+                    </div>
+                    <div class="col-md-12"> 
+                      <div class="form-group">
+                       <button type="submit" class="btn pro-click-btn">Edit</button>
+                      </div>
+                    </div>
+                
+
+                  </div>
+
+
+                    
+
+                  <br>
+
+                  
+                </div>
+
+                <div class="col-md-4 sider-right-fix">
+                  <div class="notifi-right">
+                    <div class="chat_box">
+                        <p>Out Going Orders</p>
+                        <div class="chat_inner">
+                            <span></span>
+                        </div>
+                    </div>
+                    
+
+
+                    <div class="tab-content" id="v-pills-tabContent">
+                      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                              <div class="chat_box">
+                                <p>User Chat</p>
+                                <div class="chat-part">
+                                    <div class="chat-div">
+                                      <div class="row">
+                                        <div class="col-3">
+                                          <img src="images/business-man-icon.jpg">
+                                          <div class="chat-indi chat-live"></div>
+                                        </div>
+                                        <div class="col-9">
+                                          <h5>Name <span>1</span> </h5>
+                                          <h6>10:25 pm - 20/12/2020</h6>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="chat-div">
+                                      <div class="row">
+                                        <div class="col-3">
+                                          <img src="images/business-man-icon.jpg">
+                                          <div class="chat-indi"></div>
+                                        </div>
+                                        <div class="col-9">
+                                          <h5>Name <span>8</span> </h5>
+                                          <h6>10:25 pm - 20/12/2020</h6>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <div class="chat_box">
+                                <p></p>
+                                <div class="chat-part">
+                                   <h5 style="text-align: center;margin-top: 20px;"></h5> 
+                                </div>
+                            </div>
+                      </div>
+                      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <div class="chat_box">
+                                <p></p>
+                                <div class="chat-part">
+                                   <h5 style="text-align: center;margin-top: 20px;"></h5> 
+                                </div>
+                            </div>
+                      </div>
+                      <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                            <div class="chat_box">
+                                <p></p>
+                                <div class="chat-part">
+                                   <h5 style="text-align: center;margin-top: 20px;">Other</h5> 
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+
+                   
+                    <div class="nav box-div" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class=" active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                          <i class="fa fa-comments-o"></i>
+                        </div>
+                        <div class="" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                          <i class="fa fa-cubes"></i>
+                        </div>
+                        <div class="" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                          <!-- <i class="fa fa-shopping-cart"></i> -->
+                        </div>
+                        <div class="" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                          <i class="fa fa-circle"></i>
+                        </div>
+                    </div>
+
+
+
+                    <br>
+                    <div>
+                      <a href="/StoreDashBoard" class="btn pro-click-btn">Home Page</a>
+                      <a href="javascript:history.go(-1)" class="btn pro-click-btn">Back</a>
+                    </div>
+
+
+
+                  </div>
+              </div>
+
+              </div>
+              </form>
+
+
+            </div>
+
+            
+
+          </div>
+
+        
+      
+  
+</div>
+
+
+
+
+
+
+
+<footer>
+  
+  <div class="container">
+      <div class="row">
+          <ul>
+            <li><a href="/about" target="_blank" rel="noopener noreferrer">About us</a></li>
+            <li><a href="/contact" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="/career" target="_blank" rel="noopener noreferrer">Career</a></li>
+          </ul>
+      </div>
+  </div>
+
+</footer>
+
+
+
+
+
+<div class="messenger-div">
+
+    <div class="m-head">
+      Name
+      <span><i class="fa fa-times m-hide"></i></span>
+    </div>
+    <div class="m-body">
+      <div class="m-b-left">
+          <p>Hello</p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-right">
+          <p>Hello</p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-left">
+          <p><img src="{% static 'r13/images/30100.jpg'%}" style="width: 150px;margin: 10px 0px;"></p>
+          <span>10:30 pm</span>
+      </div>
+      <div class="m-b-right">
+          <p><img src="{% static 'r13/images/30100.jpg'%}" style="width: 150px;margin: 10px 0px;"></p>
+          <span>10:30 pm</span>
+      </div>
+    </div>
+    <div class="m-footer">
+        <div class="row">
+          <div class="col-10">
+            <input type="text" class="form-control" placeholder="Type Message">
+          </div>
+          <div class="col-2">
+            <button class="m-send-btn"><i class="fa fa-paper-plane"></i></button>
+           <!--  <i class="fa fa-chain-broken my-costom-fa" aria-hidden="true"></i>
+            <i class="fa fa-smile-o my-costom-fa" aria-hidden="true"></i> -->
+          </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+  $(".m-hide").click(function(){
+    $(".messenger-div").hide(200);
+  });
+
+  $(".chat-div").click(function(){
+    $(".messenger-div").show(200);
+  });
+</script>
+
+
+
+
+<script src="{% static 'r13/js/SimpleImage.js'%}"></script>
+
+<script type="text/javascript">
+  function upload(){
+  var imgcanvas = document.getElementById("canv1");
+  var fileinput = document.getElementById("finput");
+  var image = new SimpleImage(fileinput);
+  image.drawTo(imgcanvas);
+}
+</script>
+
+
+<script>
+  $('.owl-carousel.product-slider').owlCarousel({
+      loop:true,
+      margin:10,
+      nav:true,
+      dots:false,
+      navText: [
+        "<i class='fa fa-long-arrow-left'></i>",
+        "<i class='fa fa-long-arrow-right'></i>"
+      ],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:2
+          },
+          1000:{
+              items:2
+          }
+      }
+  })
+</script>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'r13/js/jquery-3.2.1.slim.min.js'%}"></script>
+    <script src="{% static 'r13/js/popper.min.js'%}"></script>
+    <script src="{% static 'r13/js/bootstrap.min.js'%}"></script>
+  </body>
+</html>
+{% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

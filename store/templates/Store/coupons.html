@@ -1,0 +1,45 @@
+{% extends 'Store/store_base.html' %}
+{%block content %}
+<div class="col-md-7">
+                        
+  <div class="pro-div-heading">
+          <h3 style="color: #cb08e8;">Coupons List</h3>
+      </div>
+
+        <br><br>
+      <h5><a href="/Addcoupon"> Add Coupon</a></h5>  
+    <div class="table-responsive">
+      <table class="table  tbd-brd-non">
+        <thead>
+          <tr>
+            <th colspan="2">Coupon Code</th>
+            <th>Coupon Discount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for coupon in coupons %}
+          <tr>
+            <td colspan="2">{{coupon.coupon_code}}</td>
+            <td>{{coupon.coupon_discount}}</td>
+            <td>{{category.status}}</td>
+            <td>
+              <a href="/EditCoupon/{{coupon.id}}"><i class="fa fa-pencil-square-o" style="color: green; cursor: pointer;" ></i></a>
+              &nbsp;
+              <a href="/DeleteCoupon/{{coupon.id}}"><i class="fa fa-trash-o" style="color: red; cursor: pointer;" ></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+        
+      </table>
+
+    </div>
+
+      <br>
+
+</div>
+
+{% endblock %}
