@@ -25,7 +25,7 @@ SECRET_KEY = 'u6oh4y*%8-&vc6(!hpld&8=a*f-2vp*tpka*13mh(pp=$zw&v0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','']
+ALLOWED_HOSTS = ['127.0.0.1','https://simntx.herokuapp.com/']
 
 
 # Application definition
